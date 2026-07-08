@@ -1,0 +1,95 @@
+[build-system]
+requires = ["hatchling>=1.29.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fuzzy-qnn"
+version = "0.2.0"
+description = "CLI-first fuzzy quantum neural network experiments with PyTorch and PennyLane."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Alejandro Mata Ali" }]
+keywords = [
+    "python",
+    "fuzzy-logic",
+    "pennylane",
+    "pytorch",
+    "quantum-neural-networks",
+    "qnn",
+    "reproducibility",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+dependencies = [
+    "matplotlib>=3.9.0",
+    "numpy>=1.26.0",
+    "pandas>=2.2.0",
+    "pennylane>=0.43.0",
+    "pennylane-lightning>=0.43.0",
+    "pyyaml>=6.0.2",
+    "scikit-learn>=1.5.0",
+    "torch>=2.4.0",
+    "tqdm>=4.66.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pip-audit>=2.10.0",
+    "pip-licenses>=5.5.5",
+    "pyright>=1.1.409",
+    "pytest>=9.0.3",
+    "ruff>=0.15.13",
+]
+
+[project.scripts]
+fuzzy-qnn = "fuzzy_qnn.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fuzzy_qnn"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+markers = ["gpu: tests that require CUDA and PennyLane GPU support"]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+extend-exclude = [
+    ".tmp",
+    ".venv",
+    ".pytest_cache",
+    "pytest-cache",
+    "pytest-temp",
+    "pytest-cache-files-*",
+    "test-artifacts",
+]
+line-length = 100
+src = ["src", "tests", "examples", "scripts"]
+target-version = "py311"
+
+[tool.ruff.format]
+indent-style = "space"
+line-ending = "lf"
+quote-style = "double"
+
+[tool.ruff.lint]
+select = ["ANN", "ARG", "B", "C4", "E", "F", "I", "N", "RUF", "SIM", "UP"]
+ignore = ["ANN401"]
+
+[tool.pyright]
+include = ["src", "tests", "examples", "scripts"]
+pythonVersion = "3.11"
+typeCheckingMode = "standard"
+venvPath = "."
+venv = ".venv"

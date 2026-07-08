@@ -1,0 +1,49 @@
+experiment_name: breast_cancer_fqnn_gpu
+seed: 1234
+dataset:
+  name: breast_cancer
+  test_size: 0.15
+  val_size: 0.15
+  scale: standard_then_minmax
+  feature_reduction: pca
+  d_in: 4
+  n_samples: null
+  n_classes: null
+  n_informative: null
+  n_redundant: null
+  class_sep: null
+  flip_y: null
+model:
+  n_fuzzy_sets: 3
+  n_rules: 6
+  n_quantum_layers: 2
+training:
+  batch_size: 8
+  epochs: 80
+  learning_rate: 0.01
+  weight_decay: 0.0001
+  lambda_sigma: 0.0
+  early_stopping: true
+  patience: 15
+  min_delta: 1.0e-05
+  deterministic: false
+runtime:
+  prefer_gpu: false
+  require_gpu: false
+  torch_device: cpu
+  quantum_device: lightning.qubit
+  diff_method: adjoint
+  quantum_inputs_on_cpu: false
+logging:
+  show_progress: true
+  plot_loss: true
+  plot_accuracy: true
+  save_history_csv: true
+  save_history_json: true
+  save_stdout_log: false
+outputs:
+  output_dir: runs
+  save_best_model: true
+  save_last_model: true
+  save_rules: true
+  save_fuzzy_parameters: true

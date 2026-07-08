@@ -1,0 +1,39 @@
+| Name                    | Version      | License                              | URL                                                                   |
+|-------------------------|--------------|--------------------------------------|-----------------------------------------------------------------------|
+| CacheControl            | 0.14.4       | Apache-2.0                           | https://pypi.org/project/CacheControl/                                |
+| Pygments                | 2.20.0       | BSD-2-Clause                         | https://pygments.org                                                  |
+| boolean.py              | 5.0          | BSD-2-Clause                         | https://github.com/bastikr/boolean.py                                 |
+| certifi                 | 2026.4.22    | Mozilla Public License 2.0 (MPL 2.0) | https://github.com/certifi/python-certifi                             |
+| charset-normalizer      | 3.4.7        | MIT                                  | https://github.com/jawah/charset_normalizer/blob/master/CHANGELOG.md  |
+| colorama                | 0.4.6        | BSD License                          | https://github.com/tartley/colorama                                   |
+| cyclonedx-python-lib    | 11.7.0       | Apache Software License              | https://github.com/CycloneDX/cyclonedx-python-lib/#readme             |
+| defusedxml              | 0.7.1        | Python Software Foundation License   | https://github.com/tiran/defusedxml                                   |
+| filelock                | 3.29.0       | MIT                                  | https://github.com/tox-dev/py-filelock                                |
+| idna                    | 3.15         | BSD-3-Clause                         | https://github.com/kjd/idna                                           |
+| iniconfig               | 2.3.0        | MIT                                  | https://github.com/pytest-dev/iniconfig                               |
+| license-expression      | 30.4.4       | Apache-2.0                           | https://github.com/aboutcode-org/license-expression                   |
+| markdown-it-py          | 4.2.0        | MIT License                          | https://github.com/executablebooks/markdown-it-py                     |
+| mdurl                   | 0.1.2        | MIT License                          | https://github.com/executablebooks/mdurl                              |
+| msgpack                 | 1.1.2        | Apache-2.0                           | https://msgpack.org/                                                  |
+| nodeenv                 | 1.10.0       | BSD License                          | https://github.com/ekalinin/nodeenv                                   |
+| packageurl-python       | 0.17.6       | MIT License                          | https://github.com/package-url/packageurl-python                      |
+| packaging               | 26.2         | Apache-2.0 OR BSD-2-Clause           | https://github.com/pypa/packaging                                     |
+| pathspec                | 1.1.1        | Mozilla Public License 2.0 (MPL 2.0) | https://python-path-specification.readthedocs.io/en/latest/index.html |
+| pip-api                 | 0.0.34       | Apache Software License              | http://github.com/di/pip-api                                          |
+| pip-requirements-parser | 32.0.1       | MIT                                  | https://github.com/nexB/pip-requirements-parser                       |
+| pip_audit               | 2.10.0       | Apache Software License              | https://pypi.org/project/pip-audit/                                   |
+| platformdirs            | 4.9.6        | MIT                                  | https://github.com/tox-dev/platformdirs                               |
+| pluggy                  | 1.6.0        | MIT License                          | UNKNOWN                                                               |
+| py-serializable         | 2.1.0        | Apache Software License              | https://github.com/madpah/serializable#readme                         |
+| pyparsing               | 3.3.2        | MIT                                  | https://github.com/pyparsing/pyparsing/                               |
+| pyright                 | 1.1.409      | MIT                                  | https://github.com/RobertCraigie/pyright-python                       |
+| pytest                  | 9.0.3        | MIT                                  | https://docs.pytest.org/en/latest/                                    |
+| requests                | 2.34.2       | Apache Software License              | https://github.com/psf/requests                                       |
+| rich                    | 15.0.0       | MIT License                          | https://github.com/Textualize/rich                                    |
+| ruff                    | 0.15.13      | MIT                                  | https://docs.astral.sh/ruff                                           |
+| sortedcontainers        | 2.4.0        | Apache Software License              | http://www.grantjenks.com/docs/sortedcontainers/                      |
+| tomli                   | 2.4.1        | MIT                                  | https://github.com/hukkin/tomli                                       |
+| tomli_w                 | 1.2.0        | MIT License                          | https://github.com/hukkin/tomli-w                                     |
+| trove-classifiers       | 2026.4.28.13 | Apache Software License              | https://github.com/pypa/trove-classifiers                             |
+| typing_extensions       | 4.15.0       | PSF-2.0                              | https://github.com/python/typing_extensions                           |
+| urllib3                 | 2.7.0        | MIT                                  | https://github.com/urllib3/urllib3/blob/main/CHANGES.rst              |

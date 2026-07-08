@@ -1,0 +1,2 @@
+epoch,train_loss,train_accuracy,val_loss,val_accuracy,learning_rate,epoch_seconds,best_checkpoint
+1,1.0991039594014487,0.31666666666666665,,,0.01,0.7578408999979729,True

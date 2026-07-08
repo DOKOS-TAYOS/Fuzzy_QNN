@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Create virtual environment
+        run: python -m venv .venv
+
+      - name: Upgrade pip
+        run: ./.venv/bin/python -m pip install --upgrade pip
+        if: runner.os != 'Windows'
+
+      - name: Upgrade pip on Windows
+        run: .\.venv\Scripts\python.exe -m pip install --upgrade pip
+        if: runner.os == 'Windows'
+
+      - name: Install project
+        run: ./.venv/bin/python -m pip install -e .[dev]
+        if: runner.os != 'Windows'
+
+      - name: Install project on Windows
+        run: .\.venv\Scripts\python.exe -m pip install -e .[dev]
+        if: runner.os == 'Windows'
+
+      - name: Ruff check
+        run: ./.venv/bin/python -m ruff check .
+        if: runner.os != 'Windows'
+
+      - name: Ruff check on Windows
+        run: .\.venv\Scripts\python.exe -m ruff check .
+        if: runner.os == 'Windows'
+
+      - name: Ruff format check
+        run: ./.venv/bin/python -m ruff format . --check
+        if: runner.os != 'Windows'
+
+      - name: Ruff format check on Windows
+        run: .\.venv\Scripts\python.exe -m ruff format . --check
+        if: runner.os == 'Windows'
+
+      - name: Pytest
+        run: ./.venv/bin/python -m pytest
+        if: runner.os != 'Windows'
+
+      - name: Pytest on Windows
+        run: .\.venv\Scripts\python.exe -m pytest
+        if: runner.os == 'Windows'
+
+      - name: Pyright
+        run: ./.venv/bin/python -m pyright
+        if: runner.os != 'Windows'
+
+      - name: Pyright on Windows
+        run: .\.venv\Scripts\python.exe -m pyright
+        if: runner.os == 'Windows'
+
+  template-smoke:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.12"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Fresh template bootstrap smoke
+        run: python scripts/bootstrap_smoke.py --workspace-root "${{ runner.temp }}/template-smoke"

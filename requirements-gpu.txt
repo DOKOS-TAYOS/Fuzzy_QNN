@@ -1,0 +1,2 @@
+-r requirements.txt
+pennylane-lightning-gpu>=0.45.0

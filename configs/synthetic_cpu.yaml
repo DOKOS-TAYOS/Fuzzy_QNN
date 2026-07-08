@@ -1,0 +1,55 @@
+experiment_name: synthetic_fqnn_cpu
+seed: 1234
+
+dataset:
+  name: synthetic
+  n_samples: 2000
+  d_in: 4
+  n_classes: 2
+  n_informative: 3
+  n_redundant: 1
+  class_sep: 1.0
+  flip_y: 0.03
+  test_size: 0.15
+  val_size: 0.15
+  scale: minmax
+  feature_reduction: none
+
+model:
+  n_fuzzy_sets: 3
+  n_rules: 8
+  n_quantum_layers: 2
+
+training:
+  batch_size: 16
+  epochs: 50
+  learning_rate: 0.01
+  weight_decay: 0.0001
+  lambda_sigma: 0.0
+  early_stopping: true
+  patience: 10
+  min_delta: 0.00001
+  deterministic: false
+
+runtime:
+  prefer_gpu: false
+  require_gpu: false
+  torch_device: cpu
+  quantum_device: lightning.qubit
+  diff_method: adjoint
+  quantum_inputs_on_cpu: false
+
+logging:
+  show_progress: true
+  plot_loss: true
+  plot_accuracy: true
+  save_history_csv: true
+  save_history_json: true
+  save_stdout_log: false
+
+outputs:
+  output_dir: runs
+  save_best_model: true
+  save_last_model: true
+  save_rules: true
+  save_fuzzy_parameters: true
