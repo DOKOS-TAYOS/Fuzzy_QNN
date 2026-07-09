@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Repaired GitHub Actions workflows so CI and security jobs no longer call template-only scripts that are missing from this repository.
+
 ## [0.2.0] - 2026-07-08
 
 ### Added

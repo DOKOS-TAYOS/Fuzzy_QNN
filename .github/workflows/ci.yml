@@ -79,7 +79,7 @@ jobs:
         run: .\.venv\Scripts\python.exe -m pyright
         if: runner.os == 'Windows'
 
-  template-smoke:
+  project-smoke:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
@@ -99,5 +99,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Fresh template bootstrap smoke
-        run: python scripts/bootstrap_smoke.py --workspace-root "${{ runner.temp }}/template-smoke"
+      - name: Install project with dev tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .[dev]
+
+      - name: Dry-run project smoke
+        run: python -m fuzzy_qnn train --config configs/debug_cpu.yaml --dry-run

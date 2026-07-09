@@ -48,4 +48,4 @@ jobs:
           python -m pip install -e .[dev]
 
       - name: Audit installed Python packages
-        run: python scripts/run_template_command.py security
+        run: python -m pip_audit
