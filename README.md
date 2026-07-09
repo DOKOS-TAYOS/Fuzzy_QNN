@@ -219,6 +219,6 @@ ruff format .
 
 This work has been supported through QuantumCrip. The research has been funded by ICECyL (Junta de Castilla y Leon) under project `CCTT5/23/BU/0002 (QUANTUMCRIP)`.
 
-![QuantumCrip funding logos](assets/funding-logos.png)
+![](assets/funding-logos.png)
 
-![ICECyL logo](assets/icecyl-logo.png)
+![](assets/itcl-logo.png)
