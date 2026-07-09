@@ -2,6 +2,12 @@
 
 Experimental CLI-first implementation of a Fuzzy Quantum Neural Network for tabular classification using Python, PyTorch, and PennyLane.
 
+This repository implements a hybrid model that combines a fuzzy logic front-end with a variational quantum circuit back-end. In practical terms, the fuzzy component transforms continuous input features into fuzzy memberships and rule activations, while the quantum component processes those rule activations to produce class logits for supervised classification on tabular datasets.
+
+The project is designed as a research-oriented experimentation environment for studying how fuzzy inference and quantum machine learning can be integrated in a single workflow, with configurable training, evaluation, runtime diagnostics, saved artifacts, and reproducible experiments from the command line.
+
+This work has been developed in the framework of QuantumCrip.
+
 Repository: [github.com/DOKOS-TAYOS/Fuzzy_QNN](https://github.com/DOKOS-TAYOS/Fuzzy_QNN)
 
 The goal is practical experimentation from terminal:
