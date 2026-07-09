@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, cast
 
 import pennylane as qml
 import torch
@@ -214,10 +214,10 @@ def _run_adjoint_check(runtime: RuntimeInfo) -> None:
     device = qml.device(runtime.quantum_device, wires=2)
 
     @qml.qnode(device, interface="torch", diff_method=runtime.diff_method)
-    def circuit(weights: torch.Tensor) -> torch.Tensor:
-        qml.RY(weights[0], wires=0)
+    def circuit(weights: torch.Tensor) -> Any:
+        qml.RY(cast(Any, weights[0]), wires=0)
         qml.CNOT(wires=[0, 1])
-        qml.RZ(weights[1], wires=1)
+        qml.RZ(cast(Any, weights[1]), wires=1)
         return qml.expval(qml.PauliZ(1))
 
     weights = torch.randn(2, requires_grad=True, device=runtime.torch_device)
@@ -228,10 +228,10 @@ def _run_minimal_qnode_forward(runtime: RuntimeInfo) -> None:
     device = qml.device(runtime.quantum_device, wires=2)
 
     @qml.qnode(device, interface="torch", diff_method=runtime.diff_method)
-    def circuit(weights: torch.Tensor) -> torch.Tensor:
-        qml.RY(weights[0], wires=0)
+    def circuit(weights: torch.Tensor) -> Any:
+        qml.RY(cast(Any, weights[0]), wires=0)
         qml.CNOT(wires=[0, 1])
-        qml.RZ(weights[1], wires=1)
+        qml.RZ(cast(Any, weights[1]), wires=1)
         return qml.expval(qml.PauliZ(1))
 
     weights = torch.randn(2, device=runtime.torch_device)
@@ -242,14 +242,14 @@ def _run_minimal_qnode_backward(runtime: RuntimeInfo) -> None:
     device = qml.device(runtime.quantum_device, wires=2)
 
     @qml.qnode(device, interface="torch", diff_method=runtime.diff_method)
-    def circuit(weights: torch.Tensor) -> torch.Tensor:
-        qml.RY(weights[0], wires=0)
+    def circuit(weights: torch.Tensor) -> Any:
+        qml.RY(cast(Any, weights[0]), wires=0)
         qml.CNOT(wires=[0, 1])
-        qml.RZ(weights[1], wires=1)
+        qml.RZ(cast(Any, weights[1]), wires=1)
         return qml.expval(qml.PauliZ(1))
 
     weights = torch.randn(2, requires_grad=True, device=runtime.torch_device)
-    result = circuit(weights)
+    result = cast(torch.Tensor, circuit(weights))
     result.backward()
     if weights.grad is None:
         raise RuntimeError("Torch gradient was not produced by the diagnostic QNode.")

@@ -49,7 +49,9 @@ class TrainingHistory:
         self.epoch_seconds.append(epoch_seconds)
         self.best_checkpoint.append(best_checkpoint)
 
-    def to_dict(self) -> dict[str, list[int | float | bool | None]]:
+    def to_dict(
+        self,
+    ) -> dict[str, list[int] | list[float] | list[float | None] | list[bool]]:
         return {
             "epoch": self.epoch,
             "train_loss": self.train_loss,

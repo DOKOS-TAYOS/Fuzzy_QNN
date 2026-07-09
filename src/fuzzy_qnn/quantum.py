@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from typing import Any, cast
 
 import pennylane as qml
 import torch
@@ -32,18 +33,18 @@ class QuantumRuleCircuit(nn.Module):
             alpha_single: torch.Tensor,
             theta: torch.Tensor,
             phi: torch.Tensor,
-        ) -> Sequence[torch.Tensor]:
+        ) -> Any:
             eps = 1e-7
 
             for rule_index in range(self.n_rules):
                 clipped_alpha = torch.clamp(alpha_single[rule_index], eps, 1.0 - eps)
                 angle = 2.0 * torch.arcsin(torch.sqrt(clipped_alpha))
-                qml.RY(angle, wires=rule_index)
+                qml.RY(cast(Any, angle), wires=rule_index)
 
             for layer_index in range(self.n_layers):
                 for rule_index in range(self.n_rules):
-                    qml.RY(theta[layer_index, rule_index, 0], wires=rule_index)
-                    qml.RZ(theta[layer_index, rule_index, 1], wires=rule_index)
+                    qml.RY(cast(Any, theta[layer_index, rule_index, 0]), wires=rule_index)
+                    qml.RZ(cast(Any, theta[layer_index, rule_index, 1]), wires=rule_index)
 
                 for rule_index in range(self.n_rules - 1):
                     qml.CNOT(wires=[rule_index, rule_index + 1])
@@ -53,7 +54,7 @@ class QuantumRuleCircuit(nn.Module):
                 for rule_index in range(self.n_rules):
                     for class_index in range(self.n_classes):
                         qml.CRY(
-                            phi[layer_index, rule_index, class_index],
+                            cast(Any, phi[layer_index, rule_index, class_index]),
                             wires=[rule_index, self.n_rules + class_index],
                         )
 
@@ -72,7 +73,10 @@ class QuantumRuleCircuit(nn.Module):
             phi = phi.to("cpu")
         outputs: list[torch.Tensor] = []
         for alpha_single in alpha:
-            circuit_output = self._circuit(alpha_single, theta, phi)
+            circuit_output = cast(
+                torch.Tensor | Sequence[torch.Tensor],
+                self._circuit(alpha_single, theta, phi),
+            )
             if isinstance(circuit_output, torch.Tensor):
                 outputs.append(circuit_output)
             else:

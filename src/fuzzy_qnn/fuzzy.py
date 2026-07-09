@@ -89,8 +89,10 @@ class FuzzyBlock(nn.Module):
         seed: int = 1234,
     ) -> None:
         super().__init__()
-        self.fuzzy_layer = GaussianFuzzyLayer(d_in=d_in, n_fuzzy_sets=n_fuzzy_sets)
-        self.rule_layer = FuzzyRuleLayer(
+        self.fuzzy_layer: GaussianFuzzyLayer = GaussianFuzzyLayer(
+            d_in=d_in, n_fuzzy_sets=n_fuzzy_sets
+        )
+        self.rule_layer: FuzzyRuleLayer = FuzzyRuleLayer(
             d_in=d_in,
             n_fuzzy_sets=n_fuzzy_sets,
             n_rules=n_rules,

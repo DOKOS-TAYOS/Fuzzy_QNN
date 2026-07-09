@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import tomllib
 from pathlib import Path
 
 import yaml
@@ -49,3 +50,11 @@ def test_workflows_only_reference_existing_repo_python_scripts() -> None:
     assert not missing_references, "Workflow steps reference missing repo scripts:\n" + "\n".join(
         missing_references
     )
+
+
+def test_pyright_include_paths_exist() -> None:
+    pyproject = tomllib.loads((REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    include_paths = pyproject["tool"]["pyright"]["include"]
+    missing_paths = [path for path in include_paths if not (REPO_ROOT / path).exists()]
+
+    assert not missing_paths, "Pyright include paths are missing:\n" + "\n".join(missing_paths)

@@ -15,4 +15,4 @@ These expectations apply to discussions, issues, pull requests, chats, demos, an
 
 ## Reporting
 
-Report concerns privately to the maintainers listed by the project after bootstrap. Until then, treat this file as the template baseline to customize.
+Report concerns privately to the repository maintainers.

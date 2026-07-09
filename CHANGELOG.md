@@ -4,7 +4,9 @@
 
 ### Fixed
 
-- Repaired GitHub Actions workflows so CI and security jobs no longer call template-only scripts that are missing from this repository.
+- Repaired GitHub Actions workflows so CI and security jobs no longer call missing helper scripts.
+- Fixed Pyright CI configuration and several static typing hotspots so type checking no longer references the removed `examples` path and is less brittle around scikit-learn and PennyLane boundaries.
+- Removed leftover setup-template references from repository documentation and helper scripts.
 
 ## [0.2.0] - 2026-07-08
 
@@ -21,12 +23,12 @@
 
 ### Changed
 
-- Replaced the previous template-first repository flow with a CLI-first FQNN workflow focused on executable experiments.
+- Focused the repository workflow on CLI-driven FQNN experiments.
 - Rewrote the README around installation, GPU validation, training, benchmarking, evaluation, and outputs.
 - Improved terminal UX with clearer startup summaries, more readable final test output, better YAML validation errors, and clearer `lightning.gpu` fallback messaging.
 - Changed the implicit runtime preference to CPU when a config omits `runtime.prefer_gpu`, avoiding accidental GPU attempts on unsupported systems.
 
 ### Removed
 
-- Template bootstrap, clean, and tooling package modules.
-- Template-specific tests, examples, and extra Markdown documentation that no longer described the actual project.
+- Legacy setup, clean, and tooling package modules from the previous repository layout.
+- Old tests, examples, and extra Markdown documentation that no longer described the project.

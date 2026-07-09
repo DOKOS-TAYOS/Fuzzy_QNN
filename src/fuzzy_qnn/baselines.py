@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import torch
@@ -24,8 +24,8 @@ def run_baselines(data_bundle: DataBundle, config: ExperimentConfig) -> list[dic
 def _logistic_regression_baseline(data_bundle: DataBundle, seed: int) -> dict[str, Any]:
     classifier = LogisticRegression(max_iter=1000, random_state=seed)
     classifier.fit(data_bundle.x_train, data_bundle.y_train)
-    probabilities = classifier.predict_proba(data_bundle.x_test)
-    predictions = classifier.predict(data_bundle.x_test)
+    probabilities = np.asarray(classifier.predict_proba(data_bundle.x_test))
+    predictions = np.asarray(classifier.predict(data_bundle.x_test))
     return _baseline_metrics("logistic_regression", data_bundle.y_test, predictions, probabilities)
 
 
@@ -36,8 +36,8 @@ def _mlp_baseline(data_bundle: DataBundle, seed: int) -> dict[str, Any]:
         random_state=seed,
     )
     classifier.fit(data_bundle.x_train, data_bundle.y_train)
-    probabilities = classifier.predict_proba(data_bundle.x_test)
-    predictions = classifier.predict(data_bundle.x_test)
+    probabilities = np.asarray(classifier.predict_proba(data_bundle.x_test))
+    predictions = np.asarray(classifier.predict(data_bundle.x_test))
     return _baseline_metrics("mlp", data_bundle.y_test, predictions, probabilities)
 
 
@@ -53,8 +53,8 @@ def _fuzzy_classical_baseline(data_bundle: DataBundle, config: ExperimentConfig)
         test_alpha = block(torch.tensor(data_bundle.x_test, dtype=torch.float32))[1].cpu().numpy()
     classifier = LogisticRegression(max_iter=1000, random_state=config.seed)
     classifier.fit(train_alpha, data_bundle.y_train)
-    probabilities = classifier.predict_proba(test_alpha)
-    predictions = classifier.predict(test_alpha)
+    probabilities = np.asarray(classifier.predict_proba(test_alpha))
+    predictions = np.asarray(classifier.predict(test_alpha))
     return _baseline_metrics("fuzzy_classical", data_bundle.y_test, predictions, probabilities)
 
 
@@ -68,5 +68,7 @@ def _baseline_metrics(
         "model_type": model_type,
         "accuracy": float(accuracy_score(y_true, y_pred)),
         "loss": float(log_loss(y_true, probabilities)),
-        "f1_weighted": float(f1_score(y_true, y_pred, average="weighted", zero_division=0)),
+        "f1_weighted": float(
+            f1_score(y_true, y_pred, average="weighted", zero_division=cast(Any, 0))
+        ),
     }

@@ -10,7 +10,7 @@ Use a private reporting channel defined by the maintainers. Do not open a
 public issue for a suspected secret leak or security defect until the
 maintainers confirm the handling plan.
 
-## Template Security Baseline
+## Current Security Baseline
 
 This repository keeps these tracked security defaults:
 

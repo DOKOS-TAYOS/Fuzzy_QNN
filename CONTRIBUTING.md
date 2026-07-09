@@ -4,15 +4,10 @@ Thanks for contributing.
 
 ## Workflow
 
-1. Bootstrap the template before major development.
-2. Work in small changes and prefer test-first development.
-3. Keep public APIs minimal and document new behavior.
-4. Update `CHANGELOG.md` whenever something meaningful changes.
-5. Before handing off work, run:
-   - `ruff check . --fix`
-   - `ruff format .`
-   - `pytest`
-   - `pyright`
+1. Work in small changes and prefer test-first development.
+2. Keep public APIs minimal and document new behavior.
+3. Update `CHANGELOG.md` whenever something meaningful changes.
+4. Before handing off work, run `ruff check . --fix`, `ruff format .`, `pytest`, and `pyright`.
 
 ## Development Environment
 
@@ -24,5 +19,4 @@ Thanks for contributing.
 
 - tests added or updated first when behavior changed
 - docs updated where needed
-- AI docs updated if workflow, architecture, or conventions changed
 - license inventory refreshed if dependencies changed

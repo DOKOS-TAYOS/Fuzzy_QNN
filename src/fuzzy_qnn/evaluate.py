@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import torch
@@ -118,20 +118,20 @@ def evaluate_test_set(
         evaluation.y_true,
         evaluation.y_pred,
         average="macro",
-        zero_division=0,
+        zero_division=cast(Any, 0),
     )
     f1_weighted = f1_score(
         evaluation.y_true,
         evaluation.y_pred,
         average="weighted",
-        zero_division=0,
+        zero_division=cast(Any, 0),
     )
     labels = class_names
     report = classification_report(
         evaluation.y_true,
         evaluation.y_pred,
         target_names=labels,
-        zero_division=0,
+        zero_division=cast(Any, 0),
         output_dict=True,
     )
     return TestMetrics(
@@ -143,7 +143,7 @@ def evaluate_test_set(
         test_f1_macro=float(f1_macro),
         test_f1_weighted=float(f1_weighted),
         confusion_matrix=confusion_matrix(evaluation.y_true, evaluation.y_pred).tolist(),
-        classification_report=report,
+        classification_report=cast(dict[str, Any], report),
         n_test_samples=len(evaluation.y_true),
         train_seconds=train_seconds,
         seconds_per_epoch_mean=seconds_per_epoch_mean,

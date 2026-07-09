@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import torch
+from numpy.typing import NDArray
 from sklearn.datasets import load_breast_cancer, load_iris, load_wine, make_classification
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
@@ -29,6 +30,11 @@ class DataBundle:
     y_val: np.ndarray | None
     x_test: np.ndarray
     y_test: np.ndarray
+
+
+FloatArray = NDArray[np.float32]
+FloatArray64 = NDArray[np.float64]
+IntArray = NDArray[np.int64]
 
 
 def build_dataloaders(config: ExperimentConfig) -> DataBundle:
@@ -123,22 +129,44 @@ def make_noisy_dataloader(
     return DataLoader(noisy_dataset, batch_size=batch_size, shuffle=False)
 
 
-def _load_dataset(config: ExperimentConfig) -> tuple[np.ndarray, np.ndarray, list[str], list[str]]:
+def _to_float64_array(values: Any) -> FloatArray64:
+    return np.asarray(values, dtype=np.float64)
+
+
+def _to_int_array(values: Any) -> IntArray:
+    return np.asarray(values, dtype=np.int64)
+
+
+def _to_name_list(values: Any) -> list[str]:
+    return [str(value) for value in values]
+
+
+def _load_dataset(config: ExperimentConfig) -> tuple[FloatArray64, IntArray, list[str], list[str]]:
     dataset_name = config.dataset.name.lower()
     if dataset_name == "iris":
-        dataset = load_iris()
-        return dataset.data, dataset.target, dataset.target_names.tolist(), dataset.feature_names
-    if dataset_name == "breast_cancer":
-        dataset = load_breast_cancer()
+        dataset = cast(Any, load_iris())
         return (
-            dataset.data,
-            dataset.target,
-            dataset.target_names.tolist(),
-            dataset.feature_names.tolist(),
+            _to_float64_array(dataset.data),
+            _to_int_array(dataset.target),
+            _to_name_list(dataset.target_names),
+            _to_name_list(dataset.feature_names),
+        )
+    if dataset_name == "breast_cancer":
+        dataset = cast(Any, load_breast_cancer())
+        return (
+            _to_float64_array(dataset.data),
+            _to_int_array(dataset.target),
+            _to_name_list(dataset.target_names),
+            _to_name_list(dataset.feature_names),
         )
     if dataset_name == "wine":
-        dataset = load_wine()
-        return dataset.data, dataset.target, dataset.target_names.tolist(), dataset.feature_names
+        dataset = cast(Any, load_wine())
+        return (
+            _to_float64_array(dataset.data),
+            _to_int_array(dataset.target),
+            _to_name_list(dataset.target_names),
+            _to_name_list(dataset.feature_names),
+        )
     if dataset_name == "synthetic":
         n_classes = config.dataset.n_classes or 2
         n_features = config.dataset.d_in
@@ -154,17 +182,17 @@ def _load_dataset(config: ExperimentConfig) -> tuple[np.ndarray, np.ndarray, lis
         )
         class_names = [f"class_{index}" for index in range(n_classes)]
         feature_names = [f"feature_{index}" for index in range(n_features)]
-        return features, targets, class_names, feature_names
+        return _to_float64_array(features), _to_int_array(targets), class_names, feature_names
     raise ValueError(f"Unsupported dataset '{config.dataset.name}'.")
 
 
 def _split_dataset(
-    features: np.ndarray,
-    targets: np.ndarray,
+    features: FloatArray64,
+    targets: IntArray,
     test_size: float,
     val_size: float,
     seed: int,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray | None, np.ndarray | None, np.ndarray, np.ndarray]:
+) -> tuple[FloatArray64, IntArray, FloatArray64 | None, IntArray | None, FloatArray64, IntArray]:
     x_train_val, x_test, y_train_val, y_test = train_test_split(
         features,
         targets,
@@ -173,7 +201,14 @@ def _split_dataset(
         random_state=seed,
     )
     if val_size <= 0.0:
-        return x_train_val, y_train_val, None, None, x_test, y_test
+        return (
+            _to_float64_array(x_train_val),
+            _to_int_array(y_train_val),
+            None,
+            None,
+            _to_float64_array(x_test),
+            _to_int_array(y_test),
+        )
 
     relative_val_size = val_size / (1.0 - test_size)
     x_train, x_val, y_train, y_val = train_test_split(
@@ -183,18 +218,25 @@ def _split_dataset(
         stratify=y_train_val,
         random_state=seed,
     )
-    return x_train, y_train, x_val, y_val, x_test, y_test
+    return (
+        _to_float64_array(x_train),
+        _to_int_array(y_train),
+        _to_float64_array(x_val),
+        _to_int_array(y_val),
+        _to_float64_array(x_test),
+        _to_int_array(y_test),
+    )
 
 
 def _fit_transform_features(
-    x_train: np.ndarray,
-    x_val: np.ndarray | None,
-    x_test: np.ndarray,
+    x_train: FloatArray64,
+    x_val: FloatArray64 | None,
+    x_test: FloatArray64,
     scale: str,
     feature_reduction: str,
     d_in: int,
     seed: int,
-) -> tuple[np.ndarray, np.ndarray | None, np.ndarray]:
+) -> tuple[FloatArray, FloatArray | None, FloatArray]:
     train_working = x_train
     val_working = x_val
     test_working = x_test
@@ -221,9 +263,9 @@ def _fit_transform_features(
         test_working = minmax_scaler.transform(test_working)
 
     return (
-        train_working.astype(np.float32),
-        None if val_working is None else val_working.astype(np.float32),
-        test_working.astype(np.float32),
+        np.asarray(train_working, dtype=np.float32),
+        None if val_working is None else np.asarray(val_working, dtype=np.float32),
+        np.asarray(test_working, dtype=np.float32),
     )
 
 
