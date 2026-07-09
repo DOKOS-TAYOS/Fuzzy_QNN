@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import cast
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as functional
@@ -70,14 +72,16 @@ class FuzzyRuleLayer(nn.Module):
     def forward(self, mu: torch.Tensor) -> torch.Tensor:
         batch_size = mu.shape[0]
         expanded_mu = mu.unsqueeze(1).expand(batch_size, self.n_rules, self.d_in, self.n_fuzzy_sets)
-        rule_indices = self.rules.unsqueeze(0).expand(batch_size, self.n_rules, self.d_in)
+        rule_tensor = cast(torch.Tensor, self.rules)
+        rule_indices = rule_tensor.unsqueeze(0).expand(batch_size, self.n_rules, self.d_in)
         selected = torch.gather(expanded_mu, dim=3, index=rule_indices.unsqueeze(-1)).squeeze(-1)
         alpha = torch.prod(selected, dim=-1)
         alpha_sums = alpha.sum(dim=-1, keepdim=True).clamp_min(self.eps)
         return alpha / alpha_sums
 
     def export_rules(self) -> list[list[int]]:
-        return self.rules.detach().cpu().tolist()
+        rule_tensor = cast(torch.Tensor, self.rules)
+        return rule_tensor.detach().cpu().tolist()
 
 
 class FuzzyBlock(nn.Module):
