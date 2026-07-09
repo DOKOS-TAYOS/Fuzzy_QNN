@@ -2,6 +2,8 @@
 
 Experimental CLI-first implementation of a Fuzzy Quantum Neural Network for tabular classification using Python, PyTorch, and PennyLane.
 
+Repository: [github.com/DOKOS-TAYOS/Fuzzy_QNN](https://github.com/DOKOS-TAYOS/Fuzzy_QNN)
+
 The goal is practical experimentation from terminal:
 
 - no need to edit internal Python files to train
@@ -206,3 +208,11 @@ python -m pytest
 ruff check . --fix
 ruff format .
 ```
+
+## Acknowledgment
+
+This work has been supported through QuantumCrip. The research has been funded by ICECyL (Junta de Castilla y Leon) under project `CCTT5/23/BU/0002 (QUANTUMCRIP)`.
+
+![QuantumCrip funding logos](assets/funding-logos.png)
+
+![ICECyL logo](assets/icecyl-logo.png)
